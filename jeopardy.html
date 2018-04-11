@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+    <!-- Bootstrap -->
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap-theme.min.css" integrity="sha384-rHyoN1iRsVXV4nD0JutlnGaslCJuC7uwjduW9SVrLvRYooPp2bWYgmgJQIXwl/Sp" crossorigin="anonymous">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>  
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="assets/css/style.css">
+
+    <title>Trivia Game</title>
+</head>
+<body>
+
+    <img src="assets/images/bg-720.png" id="bg">
+
+    <video id="host" width="1280" height="720" onloadstart="this.volume=0.5">
+            <source src="assets/video/host1.mp4" type="video/mp4">
+    </video>
+
+    <div id="message"><span id="msgInner"></span></div>
+
+    <table class="board">
+        <tr class="categories">
+            <td>CATEGORY</td>
+            <td>CATEGORY</td>
+            <td>CATEGORY</td>
+            <td>CATEGORY</td>
+            <td>CATEGORY</td>
+            <td>CATEGORY</td>
+        </tr>
+        <tr class="prices">
+            <td>$ 200</td>
+            <td>$ 200</td>
+            <td>$ 200</td>
+            <td>$ 200</td>
+            <td>$ 200</td>
+            <td>$ 200</td>
+        </tr>
+        <tr class="prices">
+            <td>$ 400</td>
+            <td>$ 400</td>
+            <td>$ 400</td>
+            <td>$ 400</td>
+            <td>$ 400</td>
+            <td>$ 400</td>
+        </tr>
+        <tr class="prices">
+            <td>$ 600</td>
+            <td>$ 600</td>
+            <td>$ 600</td>
+            <td>$ 600</td>
+            <td>$ 600</td>
+            <td>$ 600</td>
+        </tr>
+        <tr class="prices">
+            <td>$ 800</td>
+            <td>$ 800</td>
+            <td>$ 800</td>
+            <td>$ 800</td>
+            <td>$ 800</td>
+            <td>$ 800</td>
+        </tr>
+        <tr class="prices">
+            <td>$ 1000</td>
+            <td>$ 1000</td>
+            <td>$ 1000</td>
+            <td>$ 1000</td>
+            <td>$ 1000</td>
+            <td>$ 1000</td>
+        </tr>
+    </table>
+
+
+<!-- 
+    <h1>Trivia Game</h1>
+    <button class="btn-primary" id="start">Start</button>
+    <h2>Time Remaining: <span id="time"></span></h2>
+    <h2 id="question">Question</h2>
+    <p id="a1" class="answer">Answer 1</p>
+    <p id="a2" class="answer">Answer 2</p>
+    <p id="a3" class="answer">Answer 3</p>  
+    <p id="a4" class="answer">Answer 4</p>   -->
+
+    <!-- Custom JavaScript -->
+    <script src="assets/javascript/app.js"></script>
+
+</body>
+</html>

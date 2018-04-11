@@ -1,0 +1,93 @@
+body {
+    background: black;
+}
+
+/* Game Background */
+img#bg {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 1280px;
+    margin-left: -640px; /* Half the width */
+    height: 720px;
+    margin-top: -360px; /* Half the height */
+    z-index: -1;
+}
+
+video#host {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 1280px;
+    margin-left: -640px; /* Half the width */
+    height: 720px;
+    margin-top: -360px; /* Half the height */
+    z-index: 1;
+
+}
+
+@font-face {
+    font-family: S911;
+    src: url(../fonts/Swiss911.ttf);
+}
+
+@font-face {
+    font-family: Korinna;
+    src: url(../fonts/korinna.otf);
+}
+
+.board {
+    position: absolute;
+    top: 51.8%;
+    left: 50%;
+    width: 854px;
+    margin-left: -427px; /* Half the width */
+    height: 480px;
+    margin-top: -240px; /* Half the height */
+    background-color: #0015a0;
+}
+
+.board td {
+    border: 4px solid black;
+}
+
+.categories {
+    font-family: S911;
+    font-size: 2em;
+    text-align: center;
+    color: white;   
+    text-shadow: 2px 2px black;
+}
+
+.prices {
+    font-family: S911;
+    font-size: 2.5em;
+    text-align: center;  
+    color: #efaa50;
+    text-shadow: 2px 2px black;
+}
+
+#message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 1280px;
+    margin-left: -640px; /* Half the width */
+    height: 720px;
+    margin-top: -360px; /* Half the height */
+}
+
+#message span {
+    font-family: Korinna;
+    font-size: 2.5em;
+    color: white;
+    text-shadow: 2px 2px black;
+    position: absolute;
+    padding-bottom: 10px;
+    bottom: 0;
+    left: 50%;
+    -webkit-transform: translateX(-50%);
+    transform: translateX(-50%);
+    z-index: 2;
+}
+
