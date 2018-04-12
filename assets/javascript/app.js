@@ -232,9 +232,7 @@ jQuery.fn.shuffle = function () {
     return this;
 };
 
-//delete me when reactivating video
-$('#host').css("display", "none");
-/*
+
 // On load
 $(document).ready(function() {
     // Play video
@@ -300,4 +298,3 @@ $(document).ready(function() {
     
     }
 });
-*/
