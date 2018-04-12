@@ -4,43 +4,77 @@ var main = $("body"),
     correct = 0,
     incorrect = 0,
     qCount = 0,
-    currentQ = "",
     countInterval,
     timeInterval,
     qInterval,
-    clockRunning = false;
+    clockRunning = false,
+    categoryArr = [],
+    categoryID = [],
+    triviaCategories = [];
 
-var questions = [
-    q1 = {
+var currentQ = {
         q: "What is what?",
         a1: "What",
         a2: "Where",
         a3: "When",
         a4: "How",
-        correct: "Where"
+    };
+
+
+function categoryArrGen () {
+    // Generate random number array for category IDs
+    while(categoryArr.length < 6){
+        var randomnumber = Math.floor(Math.random()*(32-9)) + 9;
+        if(categoryArr.indexOf(randomnumber) > -1) continue;
+        categoryArr[categoryArr.length] = randomnumber;
     }
-];
+    // Store categoryArr values for question retrieval in getQuestion
+    categoryID = categoryArr.slice(0,7);
 
-// Get question
-function getQuestion () {
-    // Stop question change interval
-    clearInterval(qInterval);
+    // Initiate category API call
+    $.ajax({url: 'https://opentdb.com/api_category.php', method: 'GET'})
+        .done(function(response){
+            triviaCategories = response.trivia_categories;
 
-    // Update remaining questions
-    var qRemaining = questions.length - qCount;
+            // Check category number array against retrieved list
+            function catMatch(match) {
+                return match.id === categoryArr[i];
+            }
+            // Replace category placeholder text
+            for (i=0;i<categoryArr.length;i++) {
+                var result = triviaCategories.find(catMatch);
+                categoryArr[i] = result.name;
 
-    // Set current question display
-    currentQ = questions[qCount];
-    $('#question').html(currentQ.q);
-    $('#a1').html(currentQ.a1);
-    $('#a2').html(currentQ.a2);
-    $('#a3').html(currentQ.a3);
-    $('#a4').html(currentQ.a4);
-
-    // Activate timer
-    timer.reset();
-    timer.start();
+                // String length fixes
+                if (categoryArr[i].startsWith("Entertainment: Japanese") == true) {
+                    var jpFix = categoryArr[i].replace('Entertainment: Japanese ','');
+                    $('.category.cat'+(i+1)).html(jpFix);
+                }
+                else if (categoryArr[i].startsWith("Entertainment: Video") == true) {
+                    var vidFix = categoryArr[i].replace('Entertainment: Video Games','Video<br>Games');
+                    $('.category.cat'+(i+1)).html(vidFix);
+                }
+                else if (categoryArr[i].startsWith("Science: Mathematics") == true) {
+                    var mathFix = categoryArr[i].replace('Science: Mathematics','Math');
+                    $('.category.cat'+(i+1)).html(mathFix);
+                }
+                else if (categoryArr[i].startsWith("Science") == true) {
+                    var sciFix = categoryArr[i].replace('Science: ','');
+                    $('.category.cat'+(i+1)).html(sciFix);
+                }
+                else if (categoryArr[i].startsWith("Entertainment") == true) {
+                    var entFix = categoryArr[i].replace('Entertainment: ','');
+                    $('.category.cat'+(i+1)).html(entFix);
+                }
+                else {
+                    $('.category.cat'+(i+1)).html(categoryArr[i]);
+                }
+            }
+        });
 }
+categoryArrGen();
+
+
 
 // Timer (modified stopwatch code)
 var timer = {
@@ -103,41 +137,108 @@ var timer = {
       }
 };
 
-// Button click
+
+// Get question
+function showQuestion () {
+    // Stop question change interval
+    clearInterval(qInterval);
+
+    // Set current question display
+    $('#question').html(currentQ.q);
+    $('#a1').html(currentQ.a1);
+    $('#a2').html(currentQ.a2);
+    $('#a3').html(currentQ.a3);
+    $('#a4').html(currentQ.a4);
+    $('#answers p.answer').shuffle();
+
+    // Activate timer
+    timer.reset();
+    timer.start();
+}
+
+// Question click
+$(main).on('click', '.question', function() {
+    // Retrieve question
+    // Check value
+    var diff = '';
+    if ($(this).hasClass('200')==true || $(this).hasClass('400')==true) {
+       diff = 'easy'; 
+    }
+    else if ($(this).hasClass('600')==true || $(this).hasClass('800')==true) {
+        diff = 'medium'; 
+    }
+    else if ($(this).hasClass('1000')==true) {
+        diff = 'hard'; 
+    }
+
+    // Check category
+    var cat = '';
+    for (i=0;i<5;i++) {
+        if ($(this).hasClass('cat'+i)==true) {
+            cat = categoryID[i-1];
+        }
+    }
+
+    // API query for question
+    $.ajax({url: 'https://opentdb.com/api.php?amount=1&category='+cat+'&difficulty='+diff+'&type=multiple', method: 'GET'})
+        .done(function(response){
+            var newQ = response.results;
+            currentQ.q = newQ[0].question;
+            currentQ.a1 = newQ[0].correct_answer;
+            currentQ.a2 = newQ[0].incorrect_answers[0];
+            currentQ.a3 = newQ[0].incorrect_answers[1];
+            currentQ.a4 = newQ[0].incorrect_answers[2];
+            console.log(currentQ);
+
+            // Display retrieved question
+            showQuestion();
+            $('#blankbox').css("display", "block");
+        });
+
+
+});
+
+// Answer click
 $(main).on('click', '.answer', function() {
     // If correct
-    if (this.innerHTML == currentQ.correct) {
+    if (this.innerHTML == currentQ.a1) {
         // Display
-        $('#question').html("Correct!<br>Answer: " + currentQ.correct);
+        $('#question').html("Correct!<br>Answer: " + currentQ.a1);
         // Stop answer timer & start question change timer
         timer.stop();
-        qInterval = setInterval(getQuestion, 1000 * 5);
+        qInterval = setInterval(showBoard, 1000 * 2);
     }
     // If incorrect
     else {
         // Display
-        $('#question').html("Incorrect!<br>Answer: " + currentQ.correct);
+        $('#question').html("Incorrect!<br>Answer: " + currentQ.a1);
         // Stop answer timer & start question change timer
         timer.stop();
-        qInterval = setInterval(getQuestion, 1000 * 5); 
+        qInterval = setInterval(showBoard, 1000 * 4); 
     }
 });
 
-// Start button
-$(main).on('click', '#start', function() {
-    // Start game
-    getQuestion();
+function showBoard () {
+    $('#blankbox').css("display","none");
+}
 
-    // Hide button
-    $('#start').css({display: "none"});
-});
+// Shuffle elements
+jQuery.fn.shuffle = function () {
+    var j;
+    for (var i = 0; i < this.length; i++) {
+        j = Math.floor(Math.random() * this.length);
+        $(this[i]).before($(this[j]));
+    }
+    return this;
+};
 
+//delete me when reactivating video
+$('#host').css("display", "none");
+/*
 // On load
 $(document).ready(function() {
     // Play video
     video.trigger('play');
-
-    console.log(video.volume);
 
     // Play background music
     var bgmusic = new Audio('assets/audio/theme.mp3');
@@ -174,7 +275,6 @@ $(document).ready(function() {
         var i = 0;
         function showMsg() {
             $('#msgInner').append(msg[msgCount][i]);
-            console.log(msg[msgCount][i]);
             i++; 
         }
 
@@ -200,3 +300,4 @@ $(document).ready(function() {
     
     }
 });
+*/

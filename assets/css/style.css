@@ -49,6 +49,9 @@ video#host {
 
 .board td {
     border: 4px solid black;
+    width: 142px;
+    line-height: 1em;
+    padding: 0 3px 0 3px;
 }
 
 .categories {
@@ -65,6 +68,55 @@ video#host {
     text-align: center;  
     color: #efaa50;
     text-shadow: 2px 2px black;
+}
+
+.vert {
+    position: relative;
+    top: 0;
+    left: 0;
+    width: 854px;
+    height: 480px;
+}
+
+.center {
+    padding: 10px 30px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 854px;
+    margin-left: -427px; /* Half the width */
+    height: 480px;
+    margin-top: -240px; /* Half the height */
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+p.answer {
+    font-size: .8em;
+}
+
+p.time {
+    font-size: .6em;
+    text-align: center;
+    position: absolute;
+    bottom: 0;
+    right: 2%;
+}
+
+p.spacer {
+    line-height: .75em;
+}
+
+#blankbox {
+    z-index: 1;
+    font-family: Korinna;
+    font-size: 2.5em;
+    color: white;
+    text-shadow: 2px 2px black;
+    text-align: center;
+    display: none;
+
 }
 
 #message {
