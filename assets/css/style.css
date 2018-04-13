@@ -58,6 +58,10 @@ video#host {
     padding: 0 3px 0 3px;
 }
 
+td.question:hover {
+    background: white;
+}
+
 .categories {
     font-family: S911;
     font-size: 2em;
