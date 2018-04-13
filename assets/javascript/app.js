@@ -13,11 +13,11 @@ var main = $("body"),
     triviaCategories = [];
 
 var currentQ = {
-        q: "What is what?",
-        a1: "What",
-        a2: "Where",
-        a3: "When",
-        a4: "How",
+        q: "Question?",
+        a1: "Answer 1",
+        a2: "Answer 2",
+        a3: "Answer 3",
+        a4: "Answer 4",
     };
 
 
@@ -30,6 +30,7 @@ function categoryArrGen () {
     }
     // Store categoryArr values for question retrieval in getQuestion
     categoryID = categoryArr.slice(0,7);
+    console.log(categoryID);
 
     // Initiate category API call
     $.ajax({url: 'https://opentdb.com/api_category.php', method: 'GET'})
@@ -45,7 +46,7 @@ function categoryArrGen () {
                 var result = triviaCategories.find(catMatch);
                 categoryArr[i] = result.name;
 
-                // String length fixes
+                // String length fixes (specific to this API)
                 if (categoryArr[i].startsWith("Entertainment: Japanese") == true) {
                     var jpFix = categoryArr[i].replace('Entertainment: Japanese ','');
                     $('.category.cat'+(i+1)).html(jpFix);
@@ -72,6 +73,8 @@ function categoryArrGen () {
             }
         });
 }
+
+// Initial category selection
 categoryArrGen();
 
 
@@ -101,14 +104,14 @@ var timer = {
 
     timeUp: function() {
         // Display
-        $('#question').html("Time up!<br>Answer: " + currentQ.correct);
+        $('#question').html("Time up!<br>Answer: " + currentQ.a1);
         $("#time").text("00:00");
 
         // Clear timer intervals
         timer.stop();        
         
         // Get new question
-        qInterval = setInterval(getQuestion, 1000 * 5);
+        qInterval = setInterval(showBoard, 1000 * 3);
     },
 
     count: function() {
@@ -158,6 +161,12 @@ function showQuestion () {
 
 // Question click
 $(main).on('click', '.question', function() {
+    // Blank square value & remove question class
+    $(this).html('').removeClass("question");
+
+    // Add 1 to question count
+    qCount++;
+
     // Retrieve question
     // Check value
     var diff = '';
@@ -173,9 +182,10 @@ $(main).on('click', '.question', function() {
 
     // Check category
     var cat = '';
-    for (i=0;i<5;i++) {
+    for (i=0;i<7;i++) {
         if ($(this).hasClass('cat'+i)==true) {
             cat = categoryID[i-1];
+            console.log(cat);
         }
     }
 
@@ -192,10 +202,19 @@ $(main).on('click', '.question', function() {
 
             // Display retrieved question
             showQuestion();
-            $('#blankbox').css("display", "block");
+
+            // Temporarily hide text
+            $('.center').css({"display":"none"});
+            var temp = setInterval(showText, 1000);
+            function showText() {
+                $('.center').css({"display":""});
+            }
+
+            // Animate box
+            $('#blankbox').css({"display":"block"}).addClass("grow");
+            $('#blankbox').css({"width":"854px","height":"480px"});
+
         });
-
-
 });
 
 // Answer click
@@ -207,6 +226,7 @@ $(main).on('click', '.answer', function() {
         // Stop answer timer & start question change timer
         timer.stop();
         qInterval = setInterval(showBoard, 1000 * 2);
+        correct++;
     }
     // If incorrect
     else {
@@ -215,11 +235,23 @@ $(main).on('click', '.answer', function() {
         // Stop answer timer & start question change timer
         timer.stop();
         qInterval = setInterval(showBoard, 1000 * 4); 
+        incorrect++;
     }
 });
 
+// Function to show board and final results
 function showBoard () {
+    // Hide question box
     $('#blankbox').css("display","none");
+
+    // If all questions answered
+    if (qCount>=30) {
+        // Show final box
+        $('#finalbox').css("display","block");
+        $('#correct').html(correct);
+        $('#incorrect').html(incorrect);
+    }
+
 }
 
 // Shuffle elements
@@ -232,6 +264,20 @@ jQuery.fn.shuffle = function () {
     return this;
 };
 
+function reset () {
+    $('.200').html('$ 200').addClass("question");
+    $('.400').html('$ 400').addClass("question");
+    $('.600').html('$ 600').addClass("question");
+    $('.800').html('$ 800').addClass("question");
+    $('.1000').html('$ 1000').addClass("question");
+    qCount = 0;
+    categoryArrGen();
+    $('#finalbox').css("display","none");
+}
+
+
+// To disable video (for debug)
+//$('#host').css("display", "none");
 
 // On load
 $(document).ready(function() {
@@ -298,3 +344,4 @@ $(document).ready(function() {
     
     }
 });
+

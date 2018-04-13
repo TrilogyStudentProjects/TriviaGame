@@ -2,6 +2,10 @@ body {
     background: black;
 }
 
+h1 {
+    font-size: 3em;
+}
+
 /* Game Background */
 img#bg {
     position: absolute;
@@ -92,6 +96,12 @@ video#host {
     flex-direction: column;
 }
 
+.btn-danger {
+    width: 200px;
+    font-size: 1em;
+    margin: 0 auto;
+}
+
 p.answer {
     font-size: .8em;
 }
@@ -116,7 +126,27 @@ p.spacer {
     text-shadow: 2px 2px black;
     text-align: center;
     display: none;
+}
 
+#blankbox.grow {
+    -webkit-transition: all 1s ease;
+    -moz-transition: all 1s ease;
+    -ms-transition: all 1s ease;
+    -o-transition: all 1s ease;
+    transition: all 1s ease;
+    height: 0px;
+    width: 0px;
+
+}
+
+#finalbox {
+    z-index: 1;
+    font-family: Korinna;
+    font-size: 2.5em;
+    color: white;
+    text-shadow: 2px 2px black;
+    text-align: center;
+    display: none;
 }
 
 #message {
