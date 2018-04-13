@@ -40,6 +40,16 @@ video#host {
     src: url(../fonts/korinna.otf);
 }
 
+.frame {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 1280px;
+    margin-left: -640px; /* Half the width */
+    height: 720px;
+    margin-top: -360px; /* Half the height */
+}
+
 .board {
     position: absolute;
     top: 51.8%;
@@ -58,6 +68,14 @@ video#host {
     padding: 0 3px 0 3px;
 }
 
+.board td.category {
+    height: 70px;
+}
+
+.board td.question {
+    height: 82px;;
+}
+
 td.question:hover {
     background: white;
 }
@@ -65,6 +83,7 @@ td.question:hover {
 .categories {
     font-family: S911;
     font-size: 2em;
+    line-height: 1em;
     text-align: center;
     color: white;   
     text-shadow: 2px 2px black;
@@ -98,6 +117,18 @@ td.question:hover {
     display: flex;
     justify-content: center;
     flex-direction: column;
+}
+
+.hostMessage {
+    position: absolute;
+    right: 40px;
+    bottom: 0;
+    z-index: 2;
+    display: none;
+}
+
+.hostMessage#twentyCorrect {
+    right: 470px;
 }
 
 .btn-danger {

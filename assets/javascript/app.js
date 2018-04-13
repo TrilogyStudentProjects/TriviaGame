@@ -20,6 +20,11 @@ var currentQ = {
         a4: "Answer 4",
     };
 
+// Sound declarations
+var coin = new Audio('assets/audio/coin.wav');
+var wrong = new Audio('assets/audio/wrong.wav');
+var message = new Audio('assets/audio/message.wav');
+
 
 function categoryArrGen () {
     // Generate random number array for category IDs
@@ -30,7 +35,6 @@ function categoryArrGen () {
     }
     // Store categoryArr values for question retrieval in getQuestion
     categoryID = categoryArr.slice(0,7);
-    console.log(categoryID);
 
     // Initiate category API call
     $.ajax({url: 'https://opentdb.com/api_category.php', method: 'GET'})
@@ -103,9 +107,10 @@ var timer = {
     },
 
     timeUp: function() {
-        // Display
+        // Display & Audio
         $('#question').html("Time up!<br>Answer: " + currentQ.a1);
         $("#time").text("00:00");
+        wrong.play();
 
         // Clear timer intervals
         timer.stop();        
@@ -185,7 +190,6 @@ $(main).on('click', '.question', function() {
     for (i=0;i<7;i++) {
         if ($(this).hasClass('cat'+i)==true) {
             cat = categoryID[i-1];
-            console.log(cat);
         }
     }
 
@@ -198,10 +202,12 @@ $(main).on('click', '.question', function() {
             currentQ.a2 = newQ[0].incorrect_answers[0];
             currentQ.a3 = newQ[0].incorrect_answers[1];
             currentQ.a4 = newQ[0].incorrect_answers[2];
-            console.log(currentQ);
 
             // Display retrieved question
             showQuestion();
+
+            // Show answers
+            $('#answers').css("display", "");
 
             // Temporarily hide text
             $('.center').css({"display":"none"});
@@ -219,19 +225,50 @@ $(main).on('click', '.question', function() {
 
 // Answer click
 $(main).on('click', '.answer', function() {
+    $('#answers').css("display", "none");
     // If correct
     if (this.innerHTML == currentQ.a1) {
-        // Display
+
+        // Display & Audio
         $('#question').html("Correct!<br>Answer: " + currentQ.a1);
+        coin.play();
         // Stop answer timer & start question change timer
         timer.stop();
         qInterval = setInterval(showBoard, 1000 * 2);
         correct++;
+        
+        // Point check & message
+        console.log(correct);
+        if (correct == 5) {
+            $('#fiveCorrect').css("display", "block");
+            var messageInt  = setInterval(hideMessage, 1000 * 3);
+            function hideMessage () {
+                $('#fiveCorrect').css("display", "none");
+            }
+            message.play();
+        }
+        if (correct == 10) {
+            $('#tenCorrect').css("display", "block");
+            var messageInt  = setInterval(hideMessage, 1000 * 3);
+            function hideMessage () {
+                $('#tenCorrect').css("display", "none");
+            }
+            message.play();
+        }
+        if (correct == 20) {
+            $('#twentyCorrect').css("display", "block");
+            var messageInt  = setInterval(hideMessage, 1000 * 3);
+            function hideMessage () {
+                $('#twentyCorrect').css("display", "none");
+            }
+            message.play();
+        }
     }
     // If incorrect
     else {
-        // Display
+        // Display & Audio
         $('#question').html("Incorrect!<br>Answer: " + currentQ.a1);
+        wrong.play();
         // Stop answer timer & start question change timer
         timer.stop();
         qInterval = setInterval(showBoard, 1000 * 4); 
@@ -286,6 +323,7 @@ $(document).ready(function() {
 
     // Play background music
     var bgmusic = new Audio('assets/audio/theme.mp3');
+    bgmusic.loop = true;
     bgmusic.play();
 
     // Interval to hide video
