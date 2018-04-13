@@ -3,7 +3,7 @@ var main = $("body"),
     video = $('#host'),
     correct = 0,
     incorrect = 0,
-    qCount = 0,
+    qCount = 29,
     countInterval,
     timeInterval,
     qInterval,
@@ -39,7 +39,9 @@ function categoryArrGen () {
     // Initiate category API call
     $.ajax({url: 'https://opentdb.com/api_category.php', method: 'GET'})
         .done(function(response){
+            console.log(response);
             triviaCategories = response.trivia_categories;
+            console.log(triviaCategories);
 
             // Check category number array against retrieved list
             function catMatch(match) {
@@ -48,6 +50,7 @@ function categoryArrGen () {
             // Replace category placeholder text
             for (i=0;i<categoryArr.length;i++) {
                 var result = triviaCategories.find(catMatch);
+                console.log(result);
                 categoryArr[i] = result.name;
 
                 // String length fixes (specific to this API)
@@ -80,8 +83,6 @@ function categoryArrGen () {
 
 // Initial category selection
 categoryArrGen();
-
-
 
 // Timer (modified stopwatch code)
 var timer = {
@@ -214,18 +215,26 @@ $(main).on('click', '.question', function() {
             var temp = setInterval(showText, 1000);
             function showText() {
                 $('.center').css({"display":""});
+                clearInterval(temp);
             }
 
             // Animate box
             $('#blankbox').css({"display":"block"}).addClass("grow");
             $('#blankbox').css({"width":"854px","height":"480px"});
+            var growAway = setInterval(removeGrow, 1500);
+            function removeGrow () {
+                $('#blankbox').removeClass("grow");
+                clearInterval(growAway);
+            }
 
         });
 });
 
 // Answer click
 $(main).on('click', '.answer', function() {
+    // Hide answers
     $('#answers').css("display", "none");
+
     // If correct
     if (this.innerHTML == currentQ.a1) {
 
@@ -281,6 +290,9 @@ function showBoard () {
     // Hide question box
     $('#blankbox').css("display","none");
 
+    // Reset animation
+    $('#blankbox').css({"height":"0px","width":"0px"});
+
     // If all questions answered
     if (qCount>=30) {
         // Show final box
@@ -308,14 +320,16 @@ function reset () {
     $('.800').html('$ 800').addClass("question");
     $('.1000').html('$ 1000').addClass("question");
     qCount = 0;
+    categoryArr = [];
     categoryArrGen();
     $('#finalbox').css("display","none");
+
 }
 
 
 // To disable video (for debug)
-//$('#host').css("display", "none");
-
+$('#host').css("display", "none");
+/*
 // On load
 $(document).ready(function() {
     // Play video
@@ -382,4 +396,4 @@ $(document).ready(function() {
     
     }
 });
-
+*/
