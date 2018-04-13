@@ -106,6 +106,12 @@ p.answer {
     font-size: .8em;
 }
 
+p.answer:hover {
+    background: white;
+    color: #0015a0;
+    text-shadow: none;
+}
+
 p.time {
     font-size: .6em;
     text-align: center;
