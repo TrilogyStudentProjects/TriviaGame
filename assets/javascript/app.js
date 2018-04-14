@@ -3,7 +3,7 @@ var main = $("body"),
     video = $('#host'),
     correct = 0,
     incorrect = 0,
-    qCount = 29,
+    qCount = 0,
     countInterval,
     timeInterval,
     qInterval,
@@ -39,9 +39,7 @@ function categoryArrGen () {
     // Initiate category API call
     $.ajax({url: 'https://opentdb.com/api_category.php', method: 'GET'})
         .done(function(response){
-            console.log(response);
             triviaCategories = response.trivia_categories;
-            console.log(triviaCategories);
 
             // Check category number array against retrieved list
             function catMatch(match) {
@@ -50,7 +48,6 @@ function categoryArrGen () {
             // Replace category placeholder text
             for (i=0;i<categoryArr.length;i++) {
                 var result = triviaCategories.find(catMatch);
-                console.log(result);
                 categoryArr[i] = result.name;
 
                 // String length fixes (specific to this API)
