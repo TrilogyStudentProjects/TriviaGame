@@ -11,7 +11,9 @@ var main = $("body"),
     categoryArr = [],
     categoryID = [],
     triviaCategories = [],
-    token = '';
+    token = '',
+    qValue = 0,
+    score = 0;
 
 var currentQ = {
         q: "Question?",
@@ -82,7 +84,6 @@ function categoryArrGen () {
     $.ajax({url: 'https://opentdb.com/api_token.php?command=request', method: 'GET'})
         .done(function(response) {
             var token = response.token;
-            console.log(token);
         });
 
 }
@@ -180,6 +181,9 @@ $(main).on('click', '.question', function() {
     qCount++;
 
     // Retrieve question
+    // Check point value
+    qValue = eval($(this).attr('value'));
+
     // Check value
     var diff = '';
     if ($(this).hasClass('200')==true || $(this).hasClass('400')==true) {
@@ -251,6 +255,10 @@ $(main).on('click', '.answer', function() {
         timer.stop();
         qInterval = setInterval(showBoard, 1000 * 2);
         correct++;
+
+        // Score
+        score += qValue;
+        $('#scoreNum').html(score);
         
         // Point check & message
         if (correct == 5) {
@@ -287,6 +295,10 @@ $(main).on('click', '.answer', function() {
         timer.stop();
         qInterval = setInterval(showBoard, 1000 * 3); 
         incorrect++;
+
+        // Score
+        score -= qValue;
+        $('#scoreNum').html(score);
     }
 });
 
@@ -318,6 +330,7 @@ jQuery.fn.shuffle = function () {
     return this;
 };
 
+// Reset 
 function reset () {
     $('.200').html('$ 200').addClass("question");
     $('.400').html('$ 400').addClass("question");
@@ -328,6 +341,8 @@ function reset () {
     categoryArr = [];
     categoryArrGen();
     $('#finalbox').css("display","none");
+    score = 0;
+    $('#scoreNum').html(score);
 
 }
 
