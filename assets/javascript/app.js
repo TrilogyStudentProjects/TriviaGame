@@ -10,7 +10,8 @@ var main = $("body"),
     clockRunning = false,
     categoryArr = [],
     categoryID = [],
-    triviaCategories = [];
+    triviaCategories = [],
+    token = '';
 
 var currentQ = {
         q: "Question?",
@@ -76,6 +77,14 @@ function categoryArrGen () {
                 }
             }
         });
+
+    // API query for session token
+    $.ajax({url: 'https://opentdb.com/api_token.php?command=request', method: 'GET'})
+        .done(function(response) {
+            var token = response.token;
+            console.log(token);
+        });
+
 }
 
 // Initial category selection
@@ -192,7 +201,7 @@ $(main).on('click', '.question', function() {
     }
 
     // API query for question
-    $.ajax({url: 'https://opentdb.com/api.php?amount=1&category='+cat+'&difficulty='+diff+'&type=multiple', method: 'GET'})
+    $.ajax({url: 'https://opentdb.com/api.php?amount=1&category='+cat+'&difficulty='+diff+'&type=multiple&token='+token, method: 'GET'})
         .done(function(response){
             var newQ = response.results;
             currentQ.q = newQ[0].question;
@@ -244,7 +253,6 @@ $(main).on('click', '.answer', function() {
         correct++;
         
         // Point check & message
-        console.log(correct);
         if (correct == 5) {
             $('#fiveCorrect').css("display", "block");
             var messageInt  = setInterval(hideMessage, 1000 * 3);
@@ -277,7 +285,7 @@ $(main).on('click', '.answer', function() {
         wrong.play();
         // Stop answer timer & start question change timer
         timer.stop();
-        qInterval = setInterval(showBoard, 1000 * 4); 
+        qInterval = setInterval(showBoard, 1000 * 3); 
         incorrect++;
     }
 });
