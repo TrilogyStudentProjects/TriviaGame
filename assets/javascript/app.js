@@ -328,8 +328,8 @@ function reset () {
 
 
 // To disable video (for debug)
-$('#host').css("display", "none");
-/*
+//$('#host').css("display", "none");
+
 // On load
 $(document).ready(function() {
     // Play video
@@ -396,4 +396,4 @@ $(document).ready(function() {
     
     }
 });
-*/
+
