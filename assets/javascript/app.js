@@ -83,7 +83,7 @@ function categoryArrGen () {
     // API query for session token
     $.ajax({url: 'https://opentdb.com/api_token.php?command=request', method: 'GET'})
         .done(function(response) {
-            var token = response.token;
+            token = response.token;
         });
 
 }
