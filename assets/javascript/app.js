@@ -121,7 +121,11 @@ var timer = {
         wrong.play();
 
         // Clear timer intervals
-        timer.stop();        
+        timer.stop();      
+        
+        // Score
+        score -= qValue;
+        $('#scoreNum').html(score);
         
         // Get new question
         qInterval = setInterval(showBoard, 1000 * 3);
