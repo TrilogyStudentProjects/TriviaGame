@@ -6,6 +6,8 @@
 
 ![Screenshot 3](./screen3.jpg)
 
+Deployed version available [here](https://crsaxton87.github.io/TriviaGame/).
+
 ### Overview
 
 A trivia game imitating the one that you're thinking of using API-fed questions from the Open Trivia DB. The original intention of this assignment was to demonstrate the use of timers in Javascript, but I wanted to go a bit further, so I implemented the following:
