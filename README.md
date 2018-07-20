@@ -1,8 +1,14 @@
 # Trivia Game -- epperDJ!
 
+![Screenshot 1](./screen1.jpg)
+
+![Screenshot 2](./screen2.jpg)
+
+![Screenshot 3](./screen3.jpg)
+
 ### Overview
 
-The original intention of this assignment was to demonstrate the use of timers in Javascript, but I wanted to go a bit further, so I implemented the following:
+A trivia game imitating the one that you're thinking of using API-fed questions from the Open Trivia DB. The original intention of this assignment was to demonstrate the use of timers in Javascript, but I wanted to go a bit further, so I implemented the following:
 
 - An animated intro, starring a 3D version of myself as the host
 - Jeopardy style play, incorporating six categories to choose from and a difficulty system
